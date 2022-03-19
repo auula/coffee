@@ -10,5 +10,5 @@ type Sorting[N Number] interface {
 }
 
 func Sequence[N Number](sequence []N) {
-	Bubble[N](sequence)
+	Selection(sequence)
 }
