@@ -1,14 +1,13 @@
 package sort
 
-type Number interface {
-	comparable
-	int8 | uint8 | int16 | uint16 | int32 | uint32 | int64 | uint64 | float32 | float64
-}
+import (
+	"github.com/auula/coffee"
+)
 
-type Sorting[N Number] interface {
+type Sorting[N coffee.Number] interface {
 	Sequence([]N)
 }
 
-func Sequence[N Number](sequence []N) {
-	Selection(sequence)
+func Sequence[N coffee.Number](sequence []N) {
+	Shell(sequence)
 }
