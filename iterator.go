@@ -25,25 +25,26 @@ func Map[T, V any](iterator Iterator[T], fn func(T) V) []V {
 	return result
 }
 
-func Filter[T any](iterator Iterator[T], fn func(T) bool) []T {
+func Filter[T any](iterator Iterator[T], flag bool, fn func(T) bool) []T {
 	var (
 		element T
 		vector  []T
 	)
 	for iterator.HasNext() {
 		element = iterator.Next()
-		if !fn(element) {
+		choose := fn(element)
+		if (choose && flag) || (!choose && !flag) {
 			vector = append(vector, element)
 		}
 	}
 	return vector
 }
 
-func Reduce[T, R any](iterator Iterator[T], start R, fn func(T, R) R) R {
+func Reduce[T, R any](iterator Iterator[T], start R, fn func(R, T) R) R {
 	result := start
 	for iterator.HasNext() {
 		element := iterator.Next()
-		result = fn(element, result)
+		result = fn(result, element)
 	}
 	return result
 }
