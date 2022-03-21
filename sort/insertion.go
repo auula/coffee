@@ -9,7 +9,7 @@ func Insertion[N coffee.Number](sequence []N) {
 	for i := 1; i < len(sequence); i++ {
 		pervIndex := i - 1
 		current := sequence[i]
-		// 每次检测左边排好的并且插入
+		// Each time you detect the left and insert
 		for pervIndex >= 0 && current < sequence[pervIndex] {
 			sequence[pervIndex+1] = sequence[pervIndex]
 			pervIndex--

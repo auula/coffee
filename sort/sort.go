@@ -9,5 +9,5 @@ type Sorting[N coffee.Number] interface {
 }
 
 func Sequence[N coffee.Number](sequence []N) {
-	Shell(sequence)
+	Merge(sequence)
 }

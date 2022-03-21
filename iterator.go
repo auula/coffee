@@ -6,10 +6,8 @@ type Iterator[T any] interface {
 }
 
 func ForEach[T any](iterator Iterator[T], fn func(T)) {
-	var element T
 	for iterator.HasNext() {
-		element = iterator.Next()
-		fn(element)
+		fn(iterator.Next())
 	}
 }
 
@@ -47,4 +45,15 @@ func Reduce[T, R any](iterator Iterator[T], start R, fn func(R, T) R) R {
 		result = fn(result, element)
 	}
 	return result
+}
+
+func Limit[T any](iterator Iterator[T], n int, fn func(T)) {
+	var count int
+	for iterator.HasNext() {
+		if count == n {
+			break
+		}
+		fn(iterator.Next())
+		count++
+	}
 }
