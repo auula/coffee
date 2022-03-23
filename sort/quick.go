@@ -11,7 +11,7 @@ func Quick[N coffee.Number](sequence []N) {
 // 小的放左边，大的放右边，然后递归操作
 func partition[N coffee.Number](sequence []N, startIndex, endIndex int) int {
 	left, right := startIndex, endIndex
-	pivot := sequence[endIndex-startIndex/2]
+	pivot := sequence[startIndex]
 	for left != right {
 		// 如果右边的元素大于基准元素就向左移动指针
 		for left < right && sequence[right] > pivot {
