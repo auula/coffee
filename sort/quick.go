@@ -6,7 +6,7 @@ func Quick[N coffee.Number](sequence []N) {
 
 }
 
-func partition[N coffee.Number](sequence []N, startIndex, endIndex int) int {
-	low, high := startIndex, endIndex
-	return 0
-}
+// func partition[N coffee.Number](sequence []N, startIndex, endIndex int) int {
+// 	low, high := startIndex, endIndex
+// 	return 0
+// }

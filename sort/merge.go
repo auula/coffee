@@ -14,7 +14,7 @@ func mergeSort[N coffee.Number](sequence []N) []N {
 		return sequence
 	}
 	middle := length / 2
-	return sort(sequence[:middle], sequence[middle:])
+	return sort(mergeSort(sequence[:middle]), mergeSort(sequence[middle:]))
 }
 
 // group arrays sorting
