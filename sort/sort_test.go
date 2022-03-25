@@ -27,7 +27,7 @@ func TestSequenceByFloat64(t *testing.T) {
 	}{
 		{
 			name:     "float64",
-			sequence: []float64{121.23, 2.2, 12.1, 2, 34, 5.665, 121.3},
+			sequence: []float64{3.3, 2.2, 1.1, 2, 3, 5.665},
 		},
 	}
 	for _, tt := range tests {
