@@ -15,7 +15,7 @@ func Sorting[N coffee.Number](cp func(i, j N) bool, sequence []N) {
 			current := sequence[i]
 			for pervIndex >= 0 && cp(current, sequence[pervIndex]) {
 				sequence[pervIndex+gap] = sequence[pervIndex]
-				pervIndex -= 1
+				pervIndex -= gap
 			}
 			if pervIndex+gap != i {
 				sequence[pervIndex+gap] = current
