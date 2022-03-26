@@ -37,3 +37,23 @@ func TestSequenceByFloat64(t *testing.T) {
 		})
 	}
 }
+
+func TestSequenceBySorting(t *testing.T) {
+	tests := []struct {
+		name     string
+		sequence []float64
+	}{
+		{
+			name:     "float64",
+			sequence: []float64{3.3, 2.2, 1.1, 2, 3, 5.665},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			Sorting(func(i, j float64) bool {
+				return j > i
+			}, tt.sequence)
+			t.Log(tt.sequence)
+		})
+	}
+}
