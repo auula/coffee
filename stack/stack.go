@@ -29,8 +29,11 @@ func (s *Stack[V]) Pop() *V {
 }
 
 func (s *Stack[V]) Range(channel chan *V) {
+	if channel == nil {
+		return
+	}
 	go func() {
-		for s.Len != 0 {
+		for s.Len != 0 && channel != nil {
 			channel <- s.Pop()
 		}
 		close(channel)
