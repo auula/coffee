@@ -17,3 +17,17 @@ func TestStack(t *testing.T) {
 		t.Log(*v)
 	}
 }
+
+func TestStackIterator(t *testing.T) {
+	stack := New[int8]()
+
+	for i := 0; i < 100; i++ {
+		stack.Push(int8(i))
+	}
+
+	iter := stack.Iter()
+
+	for iter.HasNext() {
+		t.Log(iter.Next())
+	}
+}

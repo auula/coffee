@@ -1,5 +1,7 @@
 package stack
 
+import "github.com/auula/coffee"
+
 type Stack[V any] struct {
 	Len   uint
 	value []V
@@ -38,4 +40,16 @@ func (s *Stack[V]) Range(channel chan *V) {
 		}
 		close(channel)
 	}()
+}
+
+func (s *Stack[V]) Iter() coffee.Iterator[V] {
+	return s
+}
+
+func (s *Stack[V]) HasNext() bool {
+	return s.Len != 0
+}
+
+func (s *Stack[V]) Next() V {
+	return *s.Pop()
 }
