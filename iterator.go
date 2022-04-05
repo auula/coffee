@@ -26,16 +26,16 @@ func Map[T, V any](iterator Iterator[T], fn func(T) V) []V {
 func Filter[T any](iterator Iterator[T], flag bool, fn func(T) bool) []T {
 	var (
 		element T
-		vector  []T
+		slice   []T
 	)
 	for iterator.HasNext() {
 		element = iterator.Next()
 		choose := fn(element)
 		if (choose && flag) || (!choose && !flag) {
-			vector = append(vector, element)
+			slice = append(slice, element)
 		}
 	}
-	return vector
+	return slice
 }
 
 func Reduce[T, R any](iterator Iterator[T], start R, fn func(R, T) R) R {
