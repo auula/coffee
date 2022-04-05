@@ -1,6 +1,10 @@
 package stack
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/auula/coffee"
+)
 
 func TestStack(t *testing.T) {
 	stack := New[int8]()
@@ -17,7 +21,6 @@ func TestStack(t *testing.T) {
 		t.Log(*v)
 	}
 }
-
 func TestStackIterator(t *testing.T) {
 	stack := New[int8]()
 
@@ -30,4 +33,18 @@ func TestStackIterator(t *testing.T) {
 	for iter.HasNext() {
 		t.Log(iter.Next())
 	}
+}
+
+func TestStackForEach(t *testing.T) {
+	stack := New[int8]()
+
+	for i := 0; i < 100; i++ {
+		stack.Push(int8(i))
+	}
+
+	iter := stack.Iter()
+
+	coffee.ForEach(iter, func(i int8) {
+		t.Log(i)
+	})
 }
