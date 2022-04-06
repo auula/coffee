@@ -1,5 +1,7 @@
 package list
 
+import "github.com/auula/coffee"
+
 type Node[V any] struct {
 	Perv, Next *Node[V]
 	Value      V
@@ -52,6 +54,12 @@ func (list *List[V]) LPush(v V) {
 	list.Size += 1
 }
 
+func (list *List[V]) Front() V {
+	node := list.Head
+	list.Head = node.Next
+	return node.Value
+}
+
 func (list *List[V]) Get(index uint) *Node[V] {
 
 	if index > list.Size {
@@ -68,4 +76,18 @@ func (list *List[V]) Get(index uint) *Node[V] {
 	}
 
 	return node
+}
+
+func (list *List[V]) Iter() coffee.Iterator[V] {
+	return list
+}
+
+func (list *List[V]) HasNext() bool {
+	return list.Size != 0
+}
+
+func (list *List[V]) Next() V {
+	value := list.Front()
+	list.Size -= 1
+	return value
 }

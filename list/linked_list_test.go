@@ -1,6 +1,10 @@
 package list
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/auula/coffee"
+)
 
 func TestList(t *testing.T) {
 	cl := New[int]()
@@ -36,4 +40,18 @@ func TestListInsert(t *testing.T) {
 	for i := 0; i < 12; i++ {
 		t.Log(cl.Get(uint(i)))
 	}
+}
+
+func TestListForEach(t *testing.T) {
+
+	// cl := list.New[int]()
+	cl := New[int]()
+
+	for i := 0; i < 10; i++ {
+		cl.RPush(i)
+	}
+
+	coffee.ForEach(cl.Iter(), func(i int) {
+		t.Log(i)
+	})
 }
