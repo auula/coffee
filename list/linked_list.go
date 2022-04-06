@@ -60,6 +60,12 @@ func (list *List[V]) Front() V {
 	return node.Value
 }
 
+func (list *List[V]) Back() V {
+	node := list.Tail
+	list.Tail = node.Perv
+	return node.Value
+}
+
 func (list *List[V]) Get(index uint) *Node[V] {
 
 	if index > list.Size {
@@ -90,4 +96,17 @@ func (list *List[V]) Next() V {
 	value := list.Front()
 	list.Size -= 1
 	return value
+}
+
+func (list *List[V]) Range(channel chan V) {
+	if channel == nil {
+		return
+	}
+	go func() {
+		for list.Size != 0 && channel != nil {
+			channel <- list.Front()
+			list.Size -= 1
+		}
+		close(channel)
+	}()
 }
