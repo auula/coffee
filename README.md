@@ -33,15 +33,13 @@ func main() {
 		ls.RPush(i) // Insert from the right
 	}
 
-    // Get element from head
-	fmt.Println("Front:", ls.Front())
+	fmt.Println("Front:", ls.Front()) // Get element from head
 
 	for i := 0; i < 20; i++ {
 		ls.LPush(i) // Insert from the left
 	}
 
-    // Get element from tail
-	fmt.Println("Back:", ls.Back())
+	fmt.Println("Back:", ls.Back()) // Get element from tail
 
 	coffee.ForEach(ls.Iter(), func(i int) {
 		fmt.Println(i)
