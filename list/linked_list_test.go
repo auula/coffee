@@ -56,22 +56,6 @@ func TestListForEach(t *testing.T) {
 	})
 }
 
-func TestListRange(t *testing.T) {
-	cl := New[int]()
-
-	for i := 0; i < 10; i++ {
-		cl.RPush(i)
-	}
-
-	channel := make(chan int, 1)
-
-	cl.Range(channel)
-
-	for v := range channel {
-		t.Log(v)
-	}
-}
-
 func TestListBack(t *testing.T) {
 	cl := New[int]()
 
@@ -82,5 +66,4 @@ func TestListBack(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		t.Log(cl.Back())
 	}
-
 }

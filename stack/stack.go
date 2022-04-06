@@ -30,18 +30,6 @@ func (s *Stack[V]) Pop() *V {
 	return &v
 }
 
-func (s *Stack[V]) Range(channel chan *V) {
-	if channel == nil {
-		return
-	}
-	go func() {
-		for s.Len != 0 && channel != nil {
-			channel <- s.Pop()
-		}
-		close(channel)
-	}()
-}
-
 func (s *Stack[V]) Iter() coffee.Iterator[V] {
 	return s
 }

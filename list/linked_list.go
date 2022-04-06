@@ -97,16 +97,3 @@ func (list *List[V]) Next() V {
 	list.Size -= 1
 	return value
 }
-
-func (list *List[V]) Range(channel chan V) {
-	if channel == nil {
-		return
-	}
-	go func() {
-		for list.Size != 0 && channel != nil {
-			channel <- list.Front()
-			list.Size -= 1
-		}
-		close(channel)
-	}()
-}
