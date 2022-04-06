@@ -89,11 +89,9 @@ func (list *List[V]) Iter() coffee.Iterator[V] {
 }
 
 func (list *List[V]) HasNext() bool {
-	return list.Size != 0
+	return list.Head != nil && list.Tail != nil
 }
 
 func (list *List[V]) Next() V {
-	value := list.Front()
-	list.Size -= 1
-	return value
+	return list.Front()
 }
