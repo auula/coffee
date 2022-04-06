@@ -17,42 +17,42 @@ Linked List basic api:
 
 ```go
 func main() {
-    cl := list.New[int]()
+        cl := list.New[int]()
 
-	for i := 0; i < 10; i++ {
-		cl.RPush(i) // Insert from the right
-	}
+        for i := 0; i < 10; i++ {
+            cl.RPush(i) // Insert from the right
+        }
 
-    for i := 0; i < 10; i++ {
-		cl.LPush(i) // Insert from the left
-	}
+        for i := 0; i < 10; i++ {
+            cl.LPush(i) // Insert from the left
+        }
 
-    // Get element from head
-    t.Log(cl.Front())
+        // Get element from head
+        t.Log(cl.Front())
 
-    // Get element from tail
-    t.Log(cl.Back())
+        // Get element from tail
+        t.Log(cl.Back())
 
-    // Get node by index
-    node := cl.Get(6) 
-    t.Log(node)
+        // Get node by index
+        node := cl.Get(6) 
+        t.Log(node)
 }
 ```
 Linked List enhanced operation api:
 
 ```go
-    channel := make(chan int, 1)
+channel := make(chan int, 1)
 
-	cl.Range(channel)
+cl.Range(channel)
 
-	for v := range channel {
-		t.Log(v)
-	}
+for v := range channel {
+    t.Log(v)
+}
 ```
 OR
 ```go
-    coffee.ForEach(cl.Iter(), func(i int) {
-		t.Log(i)
-	})
+coffee.ForEach(cl.Iter(), func(i int) {
+    t.Log(i)
+})
 ```
 
