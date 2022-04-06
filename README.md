@@ -5,13 +5,13 @@ General programming toolkit for Golang.
 
 ### Quick Start
 
-[1. List](#List Basic API)
+[1. List](#List)
 
-[2. Stack](#Stack Basic API)
+[2. Stack](#Stack)
 
 ---
 
-### List Basic API
+### List
 
 LinkedList enhanced operation API:
 
@@ -33,7 +33,7 @@ func main() {
 		ls.RPush(i) // Insert from the right
 	}
 
-     // Get element from head
+    // Get element from head
 	fmt.Println("Front:", ls.Front())
 
 	for i := 0; i < 20; i++ {
@@ -49,7 +49,7 @@ func main() {
 
 }
 ```
-### Stack Basic API
+### Stack
 
 Stack enhanced operation API:
 
