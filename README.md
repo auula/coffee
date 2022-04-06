@@ -5,54 +5,78 @@ General programming toolkit for Golang.
 
 ### Quick Start
 
-[1. List](#List)
+[1. List](#List Basic API)
 
-[2. Stack](#Stack)
+[2. Stack](#Stack Basic API)
 
 ---
 
-### List
+### List Basic API
 
-Linked List basic api:
+LinkedList enhanced operation API:
 
 ```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/auula/coffee"
+	"github.com/auula/coffee/list"
+)
+
 func main() {
-        cl := list.New[int]()
 
-        for i := 0; i < 10; i++ {
-            cl.RPush(i) // Insert from the right
-        }
+	ls := list.New[int]()
 
-        for i := 0; i < 10; i++ {
-            cl.LPush(i) // Insert from the left
-        }
+	for i := 0; i < 10; i++ {
+		ls.RPush(i) // Insert from the right
+	}
 
-        // Get element from head
-        t.Log(cl.Front())
+     // Get element from head
+	fmt.Println("Front:", ls.Front())
 
-        // Get element from tail
-        t.Log(cl.Back())
+	for i := 0; i < 20; i++ {
+		ls.LPush(i) // Insert from the left
+	}
 
-        // Get node by index
-        node := cl.Get(6) 
-        t.Log(node)
+    // Get element from tail
+	fmt.Println("Back:", ls.Back())
+
+	coffee.ForEach(ls.Iter(), func(i int) {
+		fmt.Println(i)
+	})
+
 }
 ```
-Linked List enhanced operation api:
+### Stack Basic API
+
+Stack enhanced operation API:
 
 ```go
-channel := make(chan int, 1)
+package main
 
-cl.Range(channel)
+import (
+	"fmt"
 
-for v := range channel {
-    t.Log(v)
+	"github.com/auula/coffee"
+	"github.com/auula/coffee/stack"
+)
+
+func main() {
+	s := stack.New[int]()
+
+	for i := 1; i <= 100; i++ {
+		s.Push(i)
+	}
+
+	sum := 0
+
+	coffee.ForEach(s.Iter(), func(i int) {
+		sum += i
+	})
+
+	fmt.Println(s.Pop())
+	fmt.Println(sum)
 }
 ```
-OR
-```go
-coffee.ForEach(cl.Iter(), func(i int) {
-    t.Log(i)
-})
-```
-
