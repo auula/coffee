@@ -7,6 +7,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/auula/coffee"
 )
 
 type connection struct {
@@ -45,4 +47,29 @@ func TestPool(t *testing.T) {
 
 	wg.Wait()
 	p.Close()
+}
+
+func TestPoolForEach(t *testing.T) {
+
+	factory := func() (*connection, error) {
+		atomic.AddInt32(&count, 1)
+		return &connection{id: count}, nil
+	}
+
+	p := New(factory, 10)
+
+	for i := 0; i < 10; i++ {
+		p.Release(func() *connection {
+			atomic.AddInt32(&count, 1)
+			return &connection{id: count}
+		}())
+	}
+
+	coffee.ForEach(p.Iter(), func(c *connection) {
+		if c.id == 8 {
+			p.Close()
+		}
+		t.Log(c.id)
+	})
+
 }

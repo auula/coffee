@@ -4,6 +4,8 @@ import (
 	"errors"
 	"io"
 	"sync"
+
+	"github.com/auula/coffee"
 )
 
 type Resource interface {
@@ -65,10 +67,28 @@ func (p *Pool[T]) Close() {
 		return
 	}
 
+	p.closed = true
+
 	close(p.resources)
 
 	for resource := range p.resources {
 		resource.Close()
 	}
 
+}
+
+func (p *Pool[T]) Iter() coffee.Iterator[T] {
+	return p
+}
+
+func (p *Pool[T]) HasNext() bool {
+	return !p.closed
+}
+
+func (p *Pool[T]) Next() T {
+	var null T
+	if res, err := p.Acquire(); err == nil {
+		return res
+	}
+	return null
 }
