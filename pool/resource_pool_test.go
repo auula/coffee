@@ -51,21 +51,21 @@ func TestPool(t *testing.T) {
 
 func TestPoolForEach(t *testing.T) {
 
-	factory := func() (*connection, error) {
+	factory := func() (connection, error) {
 		atomic.AddInt32(&count, 1)
-		return &connection{id: count}, nil
+		return connection{id: count}, nil
 	}
 
 	p := New(factory, 10)
 
 	for i := 0; i < 10; i++ {
-		p.Release(func() *connection {
+		p.Release(func() connection {
 			atomic.AddInt32(&count, 1)
-			return &connection{id: count}
+			return connection{id: count}
 		}())
 	}
 
-	coffee.ForEach(p.Iter(), func(c *connection) {
+	coffee.ForEach(p.Iter(), func(c connection) {
 		if c.id == 8 {
 			p.Close()
 		}
