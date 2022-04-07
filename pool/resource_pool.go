@@ -15,11 +15,11 @@ var ErrPoolClosed = errors.New("Pool has been closed.")
 type Pool[T Resource] struct {
 	lock      sync.Mutex
 	resources chan T
-	factory   func() (*T, error)
+	factory   func() (T, error)
 	closed    bool
 }
 
-func New[T Resource](factory func() (*T, error), size int) Pool[T] {
+func New[T Resource](factory func() (T, error), size int) Pool[T] {
 	if size <= 0 {
 		size = 10
 	}
@@ -29,13 +29,14 @@ func New[T Resource](factory func() (*T, error), size int) Pool[T] {
 	}
 }
 
-func (p *Pool[T]) Acquire() (*T, error) {
+func (p *Pool[T]) Acquire() (T, error) {
 	select {
 	case resource, ok := <-p.resources:
 		if !ok {
-			return nil, ErrPoolClosed
+			var null T
+			return null, ErrPoolClosed
 		}
-		return &resource, nil
+		return resource, nil
 	default:
 		return p.factory()
 	}
