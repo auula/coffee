@@ -1,6 +1,10 @@
 package list
 
-import "github.com/auula/coffee"
+import (
+	"sync"
+
+	"github.com/auula/coffee"
+)
 
 type Node[V any] struct {
 	Perv, Next *Node[V]
@@ -9,14 +13,15 @@ type Node[V any] struct {
 
 type List[V any] struct {
 	Head, Tail *Node[V]
-	Size       uint
+	size       int
+	sync.Mutex
 }
 
 func New[V any]() List[V] {
 	return List[V]{
 		Head: nil,
 		Tail: nil,
-		Size: 0,
+		size: 0,
 	}
 }
 
@@ -25,9 +30,12 @@ func NewNode[V any](v V) *Node[V] {
 }
 
 func (list *List[V]) RPush(v V) {
+	list.Lock()
+	defer list.Unlock()
+
 	node := NewNode(v)
 
-	if list.Size == 0 {
+	if list.size == 0 {
 		list.Head = node
 		list.Tail = node
 	} else {
@@ -36,13 +44,16 @@ func (list *List[V]) RPush(v V) {
 		list.Tail = node
 	}
 
-	list.Size += 1
+	list.size += 1
 }
 
 func (list *List[V]) LPush(v V) {
+	list.Lock()
+	defer list.Unlock()
+
 	node := NewNode(v)
 
-	if list.Size == 0 {
+	if list.size == 0 {
 		list.Head = node
 		list.Tail = node
 	} else {
@@ -51,28 +62,36 @@ func (list *List[V]) LPush(v V) {
 		list.Head = node
 	}
 
-	list.Size += 1
+	list.size += 1
 }
 
 func (list *List[V]) Front() V {
+	list.Lock()
+	defer list.Unlock()
+
 	node := list.Head
 	list.Head = node.Next
 	return node.Value
 }
 
 func (list *List[V]) Back() V {
+	list.Lock()
+	defer list.Unlock()
+
 	node := list.Tail
 	list.Tail = node.Perv
 	return node.Value
 }
 
-func (list *List[V]) Get(index uint) *Node[V] {
+func (list *List[V]) Get(index int) *Node[V] {
+	list.Lock()
+	defer list.Unlock()
 
-	if index > list.Size {
+	if index > list.size {
 		return nil
 	}
 
-	if list.Size == 0 {
+	if list.size == 0 {
 		return nil
 	}
 
@@ -89,9 +108,19 @@ func (list *List[V]) Iter() coffee.Iterator[V] {
 }
 
 func (list *List[V]) HasNext() bool {
+	list.Lock()
+	defer list.Unlock()
+
 	return list.Head != nil && list.Tail != nil
 }
 
 func (list *List[V]) Next() V {
 	return list.Front()
+}
+
+func (list *List[V]) Size() int {
+	list.Lock()
+	defer list.Unlock()
+
+	return list.size
 }

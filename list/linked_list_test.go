@@ -14,7 +14,7 @@ func TestList(t *testing.T) {
 	}
 
 	for i := 0; i < 10; i++ {
-		t.Log(cl.Get(uint(i)).Value)
+		t.Log(cl.Get(i).Value)
 	}
 
 	cl.LPush(-1)
@@ -38,7 +38,7 @@ func TestListInsert(t *testing.T) {
 	pervNode.Next = newNode
 
 	for i := 0; i < 12; i++ {
-		t.Log(cl.Get(uint(i)))
+		t.Log(cl.Get(i))
 	}
 }
 
