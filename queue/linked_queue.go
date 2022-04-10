@@ -2,7 +2,6 @@ package queue
 
 import (
 	"github.com/auula/coffee"
-	"sync"
 )
 
 type Node[V any] struct {
@@ -13,12 +12,9 @@ type Node[V any] struct {
 type LinkedQueue[V any] struct {
 	head, tail *Node[V]
 	size       int
-	sync.Mutex
 }
 
 func (q *LinkedQueue[V]) EnQueue(v V) bool {
-	q.Lock()
-	defer q.Unlock()
 	node := NewNode(v)
 	if q.size == 0 {
 		q.head = node
@@ -32,8 +28,6 @@ func (q *LinkedQueue[V]) EnQueue(v V) bool {
 }
 
 func (q *LinkedQueue[V]) DeQueue() *V {
-	q.Lock()
-	defer q.Unlock()
 	if q.size == 0 {
 		return nil
 	}
@@ -48,8 +42,6 @@ func (q *LinkedQueue[V]) IsFull() bool {
 }
 
 func (q *LinkedQueue[V]) Size() int {
-	q.Lock()
-	defer q.Unlock()
 	return q.size
 }
 
