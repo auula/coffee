@@ -3,7 +3,7 @@ package queue
 import "testing"
 
 func TestArrayQueue(t *testing.T) {
-	var q Queuer[int] = NewArray[int](10)
+	var q Queued[int] = NewArray[int](10)
 
 	for i := 10; i > 0; i-- {
 		q.EnQueue(i)
@@ -29,4 +29,16 @@ func TestArrayQueue(t *testing.T) {
 
 	t.Log("IsFull:", q.IsFull())
 
+}
+
+func TestLinkedQueue(t *testing.T) {
+	var q Queued[int] = New[int]()
+
+	for i := 0; i < 10; i++ {
+		q.EnQueue(i)
+	}
+
+	for i := 0; i < 10; i++ {
+		t.Log(q.DeQueue())
+	}
 }

@@ -12,7 +12,10 @@ type Resource interface {
 	io.Closer
 }
 
-var ErrPoolClosed = errors.New("Pool has been closed.")
+var (
+	ErrPoolClosed      = errors.New("pool has been closed")
+	ErrPoolAcquireFail = errors.New("pool acquire fail")
+)
 
 type Pool[T Resource] struct {
 	lock      sync.Mutex
@@ -32,10 +35,10 @@ func New[T Resource](factory func() (T, error), size int) Pool[T] {
 }
 
 func (p *Pool[T]) Acquire() (T, error) {
+	var null T
 	select {
 	case resource, ok := <-p.resources:
 		if !ok {
-			var null T
 			return null, ErrPoolClosed
 		}
 		return resource, nil

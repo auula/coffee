@@ -65,22 +65,22 @@ func (list *List[V]) LPush(v V) {
 	list.size += 1
 }
 
-func (list *List[V]) Front() V {
+func (list *List[V]) Front() *Node[V] {
 	list.Lock()
 	defer list.Unlock()
 
 	node := list.Head
 	list.Head = node.Next
-	return node.Value
+	return node
 }
 
-func (list *List[V]) Back() V {
+func (list *List[V]) Back() *Node[V] {
 	list.Lock()
 	defer list.Unlock()
 
 	node := list.Tail
 	list.Tail = node.Perv
-	return node.Value
+	return node
 }
 
 func (list *List[V]) Get(index int) *Node[V] {
@@ -115,7 +115,7 @@ func (list *List[V]) HasNext() bool {
 }
 
 func (list *List[V]) Next() V {
-	return list.Front()
+	return list.Front().Value
 }
 
 func (list *List[V]) Size() int {

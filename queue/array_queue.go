@@ -28,17 +28,16 @@ func (a *ArrayQueue[V]) EnQueue(v V) bool {
 	return true
 }
 
-func (a *ArrayQueue[V]) DeQueue() V {
+func (a *ArrayQueue[V]) DeQueue() *V {
 	a.Lock()
 	defer a.Unlock()
 
-	var null V
 	if a.tail == a.head {
-		return null
+		return nil
 	}
 	v := a.items[a.head]
 	a.head += 1
-	return v
+	return &v
 }
 
 func (a *ArrayQueue[V]) IsFull() bool {
@@ -53,7 +52,7 @@ func (a *ArrayQueue[V]) Size() int {
 	return a.tail - a.head
 }
 
-func NewArray[V any](capacity int) Queuer[V] {
+func NewArray[V any](capacity int) Queued[V] {
 	return &ArrayQueue[V]{
 		items: make([]V, capacity),
 		head:  0,

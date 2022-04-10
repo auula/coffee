@@ -1,6 +1,5 @@
-// Open Source: MIT License
-// Author: Leon Ding <ding@ibyte.me>
-// Date: 2022/4/10 - 7:09 PM - UTC/GMT+08:00
+//go:build ignore
+// +build ignore
 
 package main
 
@@ -10,7 +9,7 @@ import (
 )
 
 func main() {
-	var q queue.Queuer[int]
+	var q queue.Queued[int]
 
 	q = queue.NewArray[int](10)
 
@@ -19,7 +18,7 @@ func main() {
 	}
 
 	for i := 0; i < 5; i++ {
-		fmt.Println(q.DeQueue())
+		fmt.Println(*q.DeQueue())
 	}
 
 	fmt.Println("IsFull:", q.IsFull())

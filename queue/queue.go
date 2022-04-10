@@ -1,8 +1,8 @@
 package queue
 
-type Queuer[V any] interface {
+type Queued[V any] interface {
 	EnQueue(v V) bool
-	DeQueue() V
+	DeQueue() *V
 	IsFull() bool
 	Size() int
 }
