@@ -1,6 +1,9 @@
 package queue
 
-import "sync"
+import (
+	"github.com/auula/coffee"
+	"sync"
+)
 
 type Node[V any] struct {
 	Perv, Next *Node[V]
@@ -56,4 +59,16 @@ func NewNode[V any](v V) *Node[V] {
 
 func New[V any]() Queued[V] {
 	return new(LinkedQueue[V])
+}
+
+func (q *LinkedQueue[V]) Iter() coffee.Iterator[V] {
+	return q
+}
+
+func (q *LinkedQueue[V]) HasNext() bool {
+	return q.size != 0
+}
+
+func (q *LinkedQueue[V]) Next() V {
+	return *q.DeQueue()
 }

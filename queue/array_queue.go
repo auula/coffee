@@ -1,17 +1,16 @@
 package queue
 
-import "sync"
+import (
+	"github.com/auula/coffee"
+)
 
 type ArrayQueue[V any] struct {
 	items      []V
 	size       int
 	head, tail int
-	sync.Mutex
 }
 
 func (a *ArrayQueue[V]) EnQueue(v V) bool {
-	a.Lock()
-	defer a.Unlock()
 
 	if a.tail == a.size {
 		if a.head == 0 {
@@ -29,8 +28,6 @@ func (a *ArrayQueue[V]) EnQueue(v V) bool {
 }
 
 func (a *ArrayQueue[V]) DeQueue() *V {
-	a.Lock()
-	defer a.Unlock()
 
 	if a.tail == a.head {
 		return nil
@@ -41,14 +38,10 @@ func (a *ArrayQueue[V]) DeQueue() *V {
 }
 
 func (a *ArrayQueue[V]) IsFull() bool {
-	a.Lock()
-	defer a.Unlock()
 	return a.tail == a.size && a.head == 0
 }
 
 func (a *ArrayQueue[V]) Size() int {
-	a.Lock()
-	defer a.Unlock()
 	return a.tail - a.head
 }
 
@@ -59,4 +52,16 @@ func NewArray[V any](capacity int) Queued[V] {
 		tail:  0,
 		size:  capacity,
 	}
+}
+
+func (a *ArrayQueue[V]) Iter() coffee.Iterator[V] {
+	return a
+}
+
+func (a *ArrayQueue[V]) HasNext() bool {
+	return a.tail-a.head != 0
+}
+
+func (a *ArrayQueue[V]) Next() V {
+	return *a.DeQueue()
 }

@@ -1,6 +1,9 @@
 package queue
 
-import "testing"
+import (
+	"github.com/auula/coffee"
+	"testing"
+)
 
 func TestArrayQueue(t *testing.T) {
 	var q Queued[int] = NewArray[int](10)
@@ -23,12 +26,11 @@ func TestArrayQueue(t *testing.T) {
 
 	t.Log("IsFull:", q.IsFull())
 
-	for i := 0; i < 10; i++ {
-		t.Log(q.DeQueue())
-	}
+	coffee.ForEach(q.Iter(), func(i int) {
+		t.Log(i)
+	})
 
 	t.Log("IsFull:", q.IsFull())
-
 }
 
 func TestLinkedQueue(t *testing.T) {
@@ -41,4 +43,12 @@ func TestLinkedQueue(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		t.Log(q.DeQueue())
 	}
+
+	for i := 0; i < 20; i++ {
+		q.EnQueue(i)
+	}
+
+	coffee.ForEach(q.Iter(), func(i int) {
+		t.Log(i)
+	})
 }
