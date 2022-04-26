@@ -5,7 +5,7 @@ import (
 )
 
 type Node[V any] struct {
-	Perv, Next *Node[V]
+	Prev, Next *Node[V]
 	Value      V
 }
 
@@ -20,7 +20,7 @@ func (q *LinkedQueue[V]) EnQueue(v V) bool {
 		q.head = node
 		q.tail = node
 	}
-	node.Perv = q.tail
+	node.Prev = q.tail
 	q.tail.Next = node
 	q.tail = node
 	q.size += 1

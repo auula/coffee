@@ -30,12 +30,12 @@ func TestListInsert(t *testing.T) {
 		cl.RPush(i)
 	}
 
-	pervNode := cl.Get(5)
+	prevNode := cl.Get(5)
 	newNode := NewNode(-5)
 
-	newNode.Perv = pervNode
-	newNode.Next = pervNode.Next
-	pervNode.Next = newNode
+	newNode.Prev = prevNode
+	newNode.Next = prevNode.Next
+	prevNode.Next = newNode
 
 	for i := 0; i < 12; i++ {
 		t.Log(cl.Get(i))

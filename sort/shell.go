@@ -7,19 +7,19 @@ import (
 // Shell sorting function
 func Shell[N coffee.Number](sequence []N) {
 	var (
-		pervIndex int
-		current   N
+		previous int
+		current  N
 	)
 	for gap := len(sequence) / 2; gap > 0; gap /= 2 {
 		for i := gap; i < len(sequence); i++ {
-			pervIndex = i - gap
+			previous = i - gap
 			current = sequence[i]
-			for pervIndex >= 0 && current < sequence[pervIndex] {
-				sequence[pervIndex+gap] = sequence[pervIndex]
-				pervIndex -= gap
+			for previous >= 0 && current < sequence[previous] {
+				sequence[previous+gap] = sequence[previous]
+				previous -= gap
 			}
-			if pervIndex+gap != i {
-				sequence[pervIndex+gap] = current
+			if previous+gap != i {
+				sequence[previous+gap] = current
 			}
 		}
 	}

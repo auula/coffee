@@ -7,7 +7,7 @@ import (
 )
 
 type Node[V any] struct {
-	Perv, Next *Node[V]
+	Prev, Next *Node[V]
 	Value      V
 }
 
@@ -36,7 +36,7 @@ func (list *List[V]) RPush(v V) {
 		list.Head = node
 		list.Tail = node
 	} else {
-		node.Perv = list.Tail
+		node.Prev = list.Tail
 		list.Tail.Next = node
 		list.Tail = node
 	}
@@ -52,7 +52,7 @@ func (list *List[V]) LPush(v V) {
 		list.Tail = node
 	} else {
 		node.Next = list.Head
-		list.Head.Perv = node
+		list.Head.Prev = node
 		list.Head = node
 	}
 
@@ -67,7 +67,7 @@ func (list *List[V]) Front() *Node[V] {
 
 func (list *List[V]) Back() *Node[V] {
 	node := list.Tail
-	list.Tail = node.Perv
+	list.Tail = node.Prev
 	return node
 }
 
