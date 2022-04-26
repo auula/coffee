@@ -9,13 +9,14 @@ func Insertion[N coffee.Number](sequence []N) {
 	for i := 1; i < len(sequence); i++ {
 		pervIndex := i - 1
 		current := sequence[i]
-		// Each time you detect the left and insert
-		for pervIndex >= 0 && current < sequence[pervIndex] {
-			sequence[pervIndex+1] = sequence[pervIndex]
-			pervIndex--
+		for pervIndex >= 0 {
+			if current < sequence[pervIndex] {
+				sequence[pervIndex+1] = sequence[pervIndex]
+			} else {
+				break
+			}
+			pervIndex -= 1
 		}
-		if pervIndex+1 != i {
-			sequence[pervIndex+1] = current
-		}
+		sequence[pervIndex+1] = current
 	}
 }
