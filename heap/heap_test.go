@@ -1,8 +1,10 @@
 package heap
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestSort(t *testing.T) {
+func TestHeapSort(t *testing.T) {
 	type args struct {
 		tree []int
 	}
@@ -24,4 +26,14 @@ func TestSort(t *testing.T) {
 			t.Log(tt.args.tree)
 		})
 	}
+}
+
+func TestHeap(t *testing.T) {
+	heap := New(func(x, y int) bool {
+		return x > y
+	}, 5, 4, 1, 3, 2, 10)
+	heap.Put(100)
+	t.Log(*heap.Peek()) // 100 √
+	heap.Poll()
+	t.Log(*heap.Peek()) // 10 √
 }

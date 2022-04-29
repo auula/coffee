@@ -1,8 +1,6 @@
 package heap
 
-import "github.com/auula/coffee"
-
-func Sort[T coffee.Number](tree []T, fn func(x, y T) bool) {
+func Sort[T any](tree []T, fn func(x, y T) bool) {
 	Build(tree, fn, len(tree))
 	for i := len(tree) - 1; i >= 0; i-- {
 		tree[0], tree[i] = tree[i], tree[0]
@@ -10,7 +8,7 @@ func Sort[T coffee.Number](tree []T, fn func(x, y T) bool) {
 	}
 }
 
-func Build[T coffee.Number](tree []T, fn func(x, y T) bool, len int) {
+func Build[T any](tree []T, fn func(x, y T) bool, len int) {
 	parent := (len - 1) / 2
 	for parent >= 0 {
 		Heapify(tree, fn, len, parent)
@@ -18,7 +16,7 @@ func Build[T coffee.Number](tree []T, fn func(x, y T) bool, len int) {
 	}
 }
 
-func Heapify[T coffee.Number](tree []T, fn func(x, y T) bool, len, i int) {
+func Heapify[T any](tree []T, fn func(x, y T) bool, len, i int) {
 
 	if i >= len {
 		return
@@ -41,6 +39,35 @@ func Heapify[T coffee.Number](tree []T, fn func(x, y T) bool, len, i int) {
 	}
 }
 
-func New[T coffee.Number](arr []T) {
+type Tree[T any] struct {
+	item []T
+	fn   func(x, y T) bool
+}
 
+func New[T any](fn func(x, y T) bool, v ...T) Tree[T] {
+	var tree Tree[T]
+	tree.fn = fn
+	tree.item = v
+	Build(tree.item, tree.fn, len(tree.item))
+	return tree
+}
+
+func (h *Tree[T]) Put(e T) {
+	h.item = append(h.item, e)
+	Build(h.item, h.fn, len(h.item))
+}
+
+func (h *Tree[T]) Peek() *T {
+	return &h.item[0]
+}
+
+func (h *Tree[T]) Poll() *T {
+	element := &h.item[0]
+	h.item = h.item[1:]
+	Build(h.item, h.fn, len(h.item))
+	return element
+}
+
+func (h *Tree[T]) Size() int {
+	return len(h.item)
 }
