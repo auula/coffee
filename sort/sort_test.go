@@ -2,6 +2,24 @@ package sort
 
 import "testing"
 
+func TestSequenceByCounting(t *testing.T) {
+	tests := []struct {
+		name     string
+		sequence []int64
+	}{
+		{
+			name:     "int64",
+			sequence: []int64{12123, 22, 121, 2, 34, 5665, 1213},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			Counting(tt.sequence)
+			t.Log(tt.sequence)
+		})
+	}
+}
+
 func TestSequenceByInt64(t *testing.T) {
 	tests := []struct {
 		name     string
