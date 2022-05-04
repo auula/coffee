@@ -11,10 +11,10 @@ func counter[N coffee.Integer](sequence []N) []N {
 
 	for i := 1; i < len(sequence); i++ {
 		if sequence[i] > max {
-			max = N(i)
+			max = sequence[i]
 		}
 		if sequence[i] < min {
-			min = N(i)
+			min = sequence[i]
 		}
 	}
 
