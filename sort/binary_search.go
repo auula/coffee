@@ -6,7 +6,7 @@ import (
 
 func Search[T coffee.Number](sequence []T, target T, len int) int {
 	low, high, middle := 0, len-1, 0
-	for low <= high {
+	for low < high {
 		middle = low + ((high - low) >> 1)
 		if sequence[middle] == target {
 			return middle
