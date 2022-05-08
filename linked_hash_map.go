@@ -23,7 +23,6 @@ func Sum64(key []byte) uint64 {
 }
 
 type Root[T any] struct {
-	Head, Tail *Node[T]
 }
 
 type Node[T any] struct {
@@ -35,6 +34,7 @@ type Node[T any] struct {
 type LinkedHashMap[T any] struct {
 	accessOrder bool                // the iteration ordering method
 	capacity    int                 // total capacity
+	head, tail  *Node[T]            // linked list
 	hashed      func([]byte) uint64 // hash function
 	table       map[uint64]*Node[T] // data storeage
 	size        int                 // current size
