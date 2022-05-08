@@ -9,7 +9,7 @@ const (
 )
 
 // Mapping structure
-type Mapping struct {
+type Map struct {
 	LoadFactor int8
 	Capacity   int16
 	Hashed     func([]byte) int64
