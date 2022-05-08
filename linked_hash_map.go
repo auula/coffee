@@ -37,7 +37,7 @@ type LinkedHashMap[T any] struct {
 	capacity    int                 // total capacity
 	hashed      func([]byte) uint64 // hash function
 	table       map[uint64]*Node[T] // data storeage
-	size        int                 // current value size
+	size        int                 // current size
 }
 
 func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
