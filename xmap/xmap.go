@@ -1,4 +1,4 @@
-package linkedmap
+package xmap
 
 type Root[T any] struct {
 	Head, Tail *Node[T]
