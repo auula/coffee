@@ -8,10 +8,10 @@ const (
 	Linked          // LinkedList storage mode
 )
 
-// Mapping structure
-type Map struct {
+// Stored structure
+type Stored struct {
 	LoadFactor int8
 	Capacity   int16
 	Hashed     func([]byte) int64
-	Store      Mode
+	Data       Mode
 }
