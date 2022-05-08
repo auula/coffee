@@ -11,8 +11,9 @@ type Node[T any] struct {
 
 // Stored structure
 type Stored[T any] struct {
-	LoadFactor int8
-	Capacity   int16
-	Hashed     func([]byte) int64
-	Slot       []Root[T]
+	accessOrder bool               // the iteration ordering method
+	loadFactor  int8               // map load factor
+	capacity    int16              // current value size
+	hashed      func([]byte) int64 // hash function
+	slot        []Root[T]          // data slot
 }
