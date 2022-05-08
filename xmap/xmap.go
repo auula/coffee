@@ -1,6 +1,6 @@
 package xmap
 
-// ModeType storage mode
+// ModeType is storage mode
 type ModeType int8
 
 const (
@@ -10,7 +10,8 @@ const (
 
 // Mapping structure
 type Mapping struct {
-	Capacity int16
-	Hashed   func([]byte) int64
-	Mode     int
+	LoadFactor int8
+	Capacity   int16
+	Hashed     func([]byte) int64
+	Mode       int
 }
