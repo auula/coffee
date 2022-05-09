@@ -47,7 +47,22 @@ func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
 	}
 }
 
-func (lkd LinkedHashMap[T]) Put(key, value T) bool {
+func (lkd *LinkedHashMap[T]) Put(key string, value T) bool {
+	if lkd.capacity == lkd.size {
+		return false
+	}
+
+	sum64 := Sum64([]byte(key))
+
+	if node, ok := lkd.table[sum64]; ok {
+		node.Value = value
+
+	}
+
+	// lkd.table[] = &Node[T]{
+	// 	Value: value,
+	// }
+
 	return false
 }
 
@@ -57,4 +72,8 @@ func (lkd LinkedHashMap[T]) Del(key T) {
 
 func (lkd LinkedHashMap[T]) Get(key T) *T {
 	return nil
+}
+
+func (lkd LinkedHashMap[T]) Cap() int {
+	return 0
 }
