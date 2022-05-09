@@ -53,9 +53,15 @@ func NewLinkedHashMap[K Hashed, V any](capacity int, accessOrder bool) LinkedHas
 
 func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
-	if key.(string) {
+	// 问题在这，key我在设计的时候就限制为了Hashed类型，而如果这个key在使用的时候传入的是结构体类型，结构体实现了
+	// HashCode() uint64 那么就做成key，但是问题溜了，如果是默认字符串，go内置的类型没有实现HashCode()uint64，
+	// 那么我这里就要断言了，看看是不是string 然后函数内置去计算哈希？有木有什么办法不这样搞？
 
-	}
+	// 如果是字符串 go内置的string没有实现HashCode()uint64
+	sum64 := Sum64([]byte(key))
+
+	// 自定义泛型 我们自己可以实现 HashCode()uint64
+	sum64 = key.HashCode()
 
 	node := &Node[K, V]{
 		Key:   key,
