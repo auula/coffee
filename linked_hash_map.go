@@ -51,6 +51,7 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 
 	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
+		moveNode(node)
 		return true
 	}
 
@@ -69,7 +70,7 @@ func (hashmap *LinkedHashMap[T]) Cap() int {
 	return 0
 }
 
-func moveNode[T any](node Node[T]) {
+func moveNode[T any](node *Node[T]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
