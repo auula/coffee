@@ -22,9 +22,6 @@ func Sum64(key []byte) uint64 {
 	return hash
 }
 
-type Root[T any] struct {
-}
-
 type Node[T any] struct {
 	Prev, Next *Node[T]
 	Value      T
@@ -48,4 +45,16 @@ func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
 		size:        0,
 		table:       make(map[uint64]*Node[T], capacity),
 	}
+}
+
+func (lkd LinkedHashMap[T]) Put(key, value T) bool {
+	return false
+}
+
+func (lkd LinkedHashMap[T]) Del(key T) {
+
+}
+
+func (lkd LinkedHashMap[T]) Get(key T) *T {
+	return nil
 }
