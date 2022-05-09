@@ -49,9 +49,19 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 
 	sum64 := Sum64([]byte(key))
 
+	node := &Node[T]{
+		Value: value,
+	}
+
+	if hashmap.head == nil && hashmap.tail == nil {
+		hashmap.head = node
+		hashmap.tail = node
+	}
+
 	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
 		moveNode(node)
+		addNodeAtTail(hashmap, node)
 		return true
 	}
 
@@ -70,12 +80,14 @@ func (hashmap *LinkedHashMap[T]) Cap() int {
 	return 0
 }
 
+// 从两个节点中间删除节点
 func moveNode[T any](node *Node[T]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
 
-func addTail[T any](hashmap LinkedHashMap[T], node *Node[T]) {
+// addTail 添加节点到链表尾巴
+func addNodeAtTail[T any](hashmap *LinkedHashMap[T], node *Node[T]) {
 	node.Prev = hashmap.tail
 	node.Next = nil
 	hashmap.tail.Next = node
