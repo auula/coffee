@@ -34,6 +34,7 @@ type LinkedHashMap[T any] struct {
 	head, tail  *Node[T]            // linked list
 	hashed      func([]byte) uint64 // hash function
 	table       map[uint64]*Node[T] // data storeage
+	size        int                 // current size
 }
 
 func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
@@ -53,19 +54,24 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 		Value: value,
 	}
 
-	if hashmap.head == nil && hashmap.tail == nil {
+	if hashmap.size == 0 {
 		hashmap.head = node
 		hashmap.tail = node
+		return true
 	}
 
 	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
 		moveNode(node)
 		addNodeAtTail(hashmap, node)
+		hashmap.size += 1
 		return true
 	}
 
-	return false
+	addNodeAtTail(hashmap, node)
+	hashmap.table[sum64] = node
+
+	return true
 }
 
 func (hashmap *LinkedHashMap[T]) Remove(key T) {
