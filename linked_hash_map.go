@@ -71,6 +71,7 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 
 	addNodeAtTail(hashmap, node)
 	hashmap.table[sum64] = node
+	hashmap.size += 1
 
 	return true
 }
