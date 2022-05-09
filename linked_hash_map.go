@@ -51,13 +51,13 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 
 	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
-
+		return true
 	}
 
 	return false
 }
 
-func (hashmap *LinkedHashMap[T]) Delete(key T) {
+func (hashmap *LinkedHashMap[T]) Remove(key T) {
 
 }
 
@@ -67,4 +67,16 @@ func (hashmap *LinkedHashMap[T]) Get(key T) *T {
 
 func (hashmap *LinkedHashMap[T]) Cap() int {
 	return 0
+}
+
+func moveNode[T any](node Node[T]) {
+	node.Next.Prev = node.Prev
+	node.Prev.Next = node.Next
+}
+
+func addTail[T any](hashmap LinkedHashMap[T], node *Node[T]) {
+	node.Prev = hashmap.tail
+	node.Next = nil
+	hashmap.tail.Next = node
+	hashmap.tail = node
 }
