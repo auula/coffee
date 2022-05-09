@@ -22,36 +22,43 @@ func Sum64(key []byte) uint64 {
 	return hash
 }
 
-type Node[K, V any] struct {
-	Prev, Next *Node[T]
+type Hashed interface {
+	comparable
+	string
+	HashCode() uint64
+}
+
+type Node[K Hashed, V any] struct {
+	Prev, Next *Node[K, V]
 	Key        K
-	Value      T
+	Value      V
 }
 
 // Stored structure
-type LinkedHashMap[K, V any] struct {
+type LinkedHashMap[K Hashed, V any] struct {
 	accessOrder bool                   // the iteration ordering method
 	capacity    int                    // total capacity
 	head, tail  *Node[K, V]            // linked list
-	hashed      func([]byte) uint64    // hash function
 	table       map[uint64]*Node[K, V] // data storeage
 	size        int                    // current size
 }
 
-func NewLinkedHashMap[K, V any](capacity int, accessOrder bool) LinkedHashMap[T] {
+func NewLinkedHashMap[K Hashed, V any](capacity int, accessOrder bool) LinkedHashMap[K, V] {
 	return LinkedHashMap[K, V]{
 		accessOrder: accessOrder,
 		capacity:    capacity,
-		hashed:      Sum64,
 		table:       make(map[uint64]*Node[K, V], capacity),
 	}
 }
 
 func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
-	sum64 := Sum64([]byte(key))
+	if key.(string) {
+
+	}
 
 	node := &Node[K, V]{
+		Key:   key,
 		Value: value,
 	}
 
@@ -90,13 +97,13 @@ func (hashmap *LinkedHashMap[K, V]) Size() int {
 }
 
 // 从两个节点中间删除节点
-func moveNode[K, V any](node *Node[K, V]) {
+func moveNode[K Hashed, V any](node *Node[K, V]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
 
 // addTail 添加节点到链表尾巴
-func addNodeAtTail[K, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
+func addNodeAtTail[K Hashed, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
 	node.Prev = hashmap.tail
 	hashmap.tail.Next = node
 	hashmap.tail = node
