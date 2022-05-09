@@ -63,6 +63,7 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
 		moveNode(node)
+		node.Next = nil
 		addNodeAtTail(hashmap, node)
 		hashmap.size += 1
 		return true
@@ -95,7 +96,6 @@ func moveNode[T any](node *Node[T]) {
 // addTail 添加节点到链表尾巴
 func addNodeAtTail[T any](hashmap *LinkedHashMap[T], node *Node[T]) {
 	node.Prev = hashmap.tail
-	node.Next = nil
 	hashmap.tail.Next = node
 	hashmap.tail = node
 }
