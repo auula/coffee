@@ -34,7 +34,6 @@ type LinkedHashMap[T any] struct {
 	head, tail  *Node[T]            // linked list
 	hashed      func([]byte) uint64 // hash function
 	table       map[uint64]*Node[T] // data storeage
-	size        int                 // current size
 }
 
 func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
@@ -42,38 +41,30 @@ func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
 		accessOrder: accessOrder,
 		capacity:    capacity,
 		hashed:      Sum64,
-		size:        0,
 		table:       make(map[uint64]*Node[T], capacity),
 	}
 }
 
-func (lkd *LinkedHashMap[T]) Put(key string, value T) bool {
-	if lkd.capacity == lkd.size {
-		return false
-	}
+func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 
 	sum64 := Sum64([]byte(key))
 
-	if node, ok := lkd.table[sum64]; ok {
+	if node, ok := hashmap.table[sum64]; ok {
 		node.Value = value
 
 	}
 
-	// lkd.table[] = &Node[T]{
-	// 	Value: value,
-	// }
-
 	return false
 }
 
-func (lkd LinkedHashMap[T]) Del(key T) {
+func (hashmap *LinkedHashMap[T]) Delete(key T) {
 
 }
 
-func (lkd LinkedHashMap[T]) Get(key T) *T {
+func (hashmap *LinkedHashMap[T]) Get(key T) *T {
 	return nil
 }
 
-func (lkd LinkedHashMap[T]) Cap() int {
+func (hashmap *LinkedHashMap[T]) Cap() int {
 	return 0
 }
