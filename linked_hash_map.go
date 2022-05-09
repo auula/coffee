@@ -22,35 +22,36 @@ func Sum64(key []byte) uint64 {
 	return hash
 }
 
-type Node[T any] struct {
+type Node[K, V any] struct {
 	Prev, Next *Node[T]
+	Key        K
 	Value      T
 }
 
 // Stored structure
-type LinkedHashMap[T any] struct {
-	accessOrder bool                // the iteration ordering method
-	capacity    int                 // total capacity
-	head, tail  *Node[T]            // linked list
-	hashed      func([]byte) uint64 // hash function
-	table       map[uint64]*Node[T] // data storeage
-	size        int                 // current size
+type LinkedHashMap[K, V any] struct {
+	accessOrder bool                   // the iteration ordering method
+	capacity    int                    // total capacity
+	head, tail  *Node[K, V]            // linked list
+	hashed      func([]byte) uint64    // hash function
+	table       map[uint64]*Node[K, V] // data storeage
+	size        int                    // current size
 }
 
-func NewLinkedHashMap[T any](capacity int, accessOrder bool) LinkedHashMap[T] {
-	return LinkedHashMap[T]{
+func NewLinkedHashMap[K, V any](capacity int, accessOrder bool) LinkedHashMap[T] {
+	return LinkedHashMap[K, V]{
 		accessOrder: accessOrder,
 		capacity:    capacity,
 		hashed:      Sum64,
-		table:       make(map[uint64]*Node[T], capacity),
+		table:       make(map[uint64]*Node[K, V], capacity),
 	}
 }
 
-func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
+func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
 	sum64 := Sum64([]byte(key))
 
-	node := &Node[T]{
+	node := &Node[K, V]{
 		Value: value,
 	}
 
@@ -76,26 +77,26 @@ func (hashmap *LinkedHashMap[T]) Put(key string, value T) bool {
 	return true
 }
 
-func (hashmap *LinkedHashMap[T]) Remove(key T) {
+func (hashmap *LinkedHashMap[K, V]) Remove(key K) {
 
 }
 
-func (hashmap *LinkedHashMap[T]) Get(key T) *T {
+func (hashmap *LinkedHashMap[K, V]) Get(key K) *V {
 	return nil
 }
 
-func (hashmap *LinkedHashMap[T]) Cap() int {
-	return 0
+func (hashmap *LinkedHashMap[K, V]) Size() int {
+	return hashmap.size
 }
 
 // 从两个节点中间删除节点
-func moveNode[T any](node *Node[T]) {
+func moveNode[K, V any](node *Node[K, V]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
 
 // addTail 添加节点到链表尾巴
-func addNodeAtTail[T any](hashmap *LinkedHashMap[T], node *Node[T]) {
+func addNodeAtTail[K, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
 	node.Prev = hashmap.tail
 	hashmap.tail.Next = node
 	hashmap.tail = node
