@@ -53,6 +53,8 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 	if hashmap.size == 0 {
 		hashmap.head = node
 		hashmap.tail = node
+		hashmap.table[key] = node
+		hashmap.size += 1
 		return true
 	}
 
@@ -73,11 +75,34 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 }
 
 func (hashmap *LinkedHashMap[K, V]) Remove(key K) {
-
+	if node, ok := hashmap.table[key]; ok {
+		moveNode(node)
+		delete(hashmap.table, key)
+	}
 }
 
 func (hashmap *LinkedHashMap[K, V]) Get(key K) *V {
-	return nil
+
+	var (
+		node *Node[V]
+		ok   bool
+	)
+
+	if node, ok = hashmap.table[key]; !ok {
+		return nil
+	}
+
+	moveNode(node)
+	addNodeAtTail(hashmap, node)
+
+	return &node.Value
+}
+
+func (hashmap *LinkedHashMap[K, V]) Clear() {
+	hashmap.size = 0
+	hashmap.head = nil
+	hashmap.tail = nil
+	hashmap.table = make(map[K]*Node[V], hashmap.capacity)
 }
 
 func (hashmap *LinkedHashMap[K, V]) Size() int {
@@ -95,4 +120,22 @@ func addNodeAtTail[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node
 	node.Prev = hashmap.tail
 	hashmap.tail.Next = node
 	hashmap.tail = node
+}
+
+func (hashmap *LinkedHashMap[K, V]) Iter() Iterator[V] {
+	return hashmap
+}
+
+func (hashmap *LinkedHashMap[K, V]) HasNext() bool {
+	return hashmap.size != 0
+}
+
+func (hashmap *LinkedHashMap[K, V]) Next() V {
+	var node *Node[V]
+	if node = hashmap.head; node != nil {
+		hashmap.head = hashmap.head.Next
+		hashmap.size -= 1
+		return node.Value
+	}
+	return node.Value
 }
