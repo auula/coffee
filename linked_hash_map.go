@@ -22,12 +22,6 @@ func Sum64(key []byte) uint64 {
 	return hash
 }
 
-type Hashed interface {
-	comparable
-	string
-	HashCode() uint64
-}
-
 type Node[V any] struct {
 	Prev, Next *Node[V]
 	Value      V
@@ -91,7 +85,7 @@ func (hashmap *LinkedHashMap[K, V]) Size() int {
 }
 
 // 从两个节点中间删除节点
-func moveNode[K comparable, V any](node *Node[V]) {
+func moveNode[V any](node *Node[V]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
