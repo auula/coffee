@@ -28,33 +28,31 @@ type Hashed interface {
 	HashCode() uint64
 }
 
-type Node[K comparable, V any] struct {
-	Prev, Next *Node[K, V]
-	Key        K
+type Node[V any] struct {
+	Prev, Next *Node[V]
 	Value      V
 }
 
 // Stored structure
 type LinkedHashMap[K comparable, V any] struct {
-	accessOrder bool              // the iteration ordering method
-	capacity    int               // total capacity
-	head, tail  *Node[K, V]       // linked list
-	table       map[K]*Node[K, V] // data storeage
-	size        int               // current size
+	accessOrder bool           // the iteration ordering method
+	capacity    int            // total capacity
+	head, tail  *Node[V]       // linked list
+	table       map[K]*Node[V] // data storeage
+	size        int            // current size
 }
 
 func NewLinkedHashMap[K comparable, V any](capacity int, accessOrder bool) LinkedHashMap[K, V] {
 	return LinkedHashMap[K, V]{
 		accessOrder: accessOrder,
 		capacity:    capacity,
-		table:       make(map[K]*Node[K, V], capacity),
+		table:       make(map[K]*Node[V], capacity),
 	}
 }
 
 func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
-	node := &Node[K, V]{
-		Key:   key,
+	node := &Node[V]{
 		Value: value,
 	}
 
@@ -93,13 +91,13 @@ func (hashmap *LinkedHashMap[K, V]) Size() int {
 }
 
 // 从两个节点中间删除节点
-func moveNode[K comparable, V any](node *Node[K, V]) {
+func moveNode[K comparable, V any](node *Node[V]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
 
 // addTail 添加节点到链表尾巴
-func addNodeAtTail[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
+func addNodeAtTail[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node[V]) {
 	node.Prev = hashmap.tail
 	hashmap.tail.Next = node
 	hashmap.tail = node
