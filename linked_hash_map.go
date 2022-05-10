@@ -41,7 +41,6 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 		moveNode(node)
 		node.Next = nil
 		addNodeAtTail(hashmap, node)
-		hashmap.size += 1
 		return true
 	}
 
