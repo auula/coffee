@@ -28,40 +28,30 @@ type Hashed interface {
 	HashCode() uint64
 }
 
-type Node[K Hashed, V any] struct {
+type Node[K comparable, V any] struct {
 	Prev, Next *Node[K, V]
 	Key        K
 	Value      V
 }
 
 // Stored structure
-type LinkedHashMap[K Hashed, V any] struct {
-	accessOrder bool                   // the iteration ordering method
-	capacity    int                    // total capacity
-	head, tail  *Node[K, V]            // linked list
-	table       map[uint64]*Node[K, V] // data storeage
-	size        int                    // current size
+type LinkedHashMap[K comparable, V any] struct {
+	accessOrder bool              // the iteration ordering method
+	capacity    int               // total capacity
+	head, tail  *Node[K, V]       // linked list
+	table       map[K]*Node[K, V] // data storeage
+	size        int               // current size
 }
 
-func NewLinkedHashMap[K Hashed, V any](capacity int, accessOrder bool) LinkedHashMap[K, V] {
+func NewLinkedHashMap[K comparable, V any](capacity int, accessOrder bool) LinkedHashMap[K, V] {
 	return LinkedHashMap[K, V]{
 		accessOrder: accessOrder,
 		capacity:    capacity,
-		table:       make(map[uint64]*Node[K, V], capacity),
+		table:       make(map[K]*Node[K, V], capacity),
 	}
 }
 
 func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
-
-	// 问题在这，key我在设计的时候就限制为了Hashed类型，而如果这个key在使用的时候传入的是结构体类型，结构体实现了
-	// HashCode() uint64 那么就做成key，但是问题溜了，如果是默认字符串，go内置的类型没有实现HashCode()uint64，
-	// 那么我这里就要断言了，看看是不是string 然后函数内置去计算哈希？有木有什么办法不这样搞？
-
-	// 如果是字符串 go内置的string没有实现HashCode()uint64
-	sum64 := Sum64([]byte(key))
-
-	// 自定义泛型 我们自己可以实现 HashCode()uint64
-	sum64 = key.HashCode()
 
 	node := &Node[K, V]{
 		Key:   key,
@@ -74,7 +64,7 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 		return true
 	}
 
-	if node, ok := hashmap.table[sum64]; ok {
+	if node, ok := hashmap.table[key]; ok {
 		node.Value = value
 		moveNode(node)
 		node.Next = nil
@@ -84,7 +74,7 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 	}
 
 	addNodeAtTail(hashmap, node)
-	hashmap.table[sum64] = node
+	hashmap.table[key] = node
 	hashmap.size += 1
 
 	return true
@@ -103,13 +93,13 @@ func (hashmap *LinkedHashMap[K, V]) Size() int {
 }
 
 // 从两个节点中间删除节点
-func moveNode[K Hashed, V any](node *Node[K, V]) {
+func moveNode[K comparable, V any](node *Node[K, V]) {
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
 
 // addTail 添加节点到链表尾巴
-func addNodeAtTail[K Hashed, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
+func addNodeAtTail[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
 	node.Prev = hashmap.tail
 	hashmap.tail.Next = node
 	hashmap.tail = node
