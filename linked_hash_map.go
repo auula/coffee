@@ -54,6 +54,7 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 func (hashmap *LinkedHashMap[K, V]) Remove(key K) {
 	if node, ok := hashmap.table[key]; ok {
 		moveNode(node)
+		hashmap.size -= 1
 		delete(hashmap.table, key)
 	}
 }
