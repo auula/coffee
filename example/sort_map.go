@@ -14,6 +14,9 @@ func main() {
 	sm.Put("Java", 100)
 	sm.Put("Rust", 80.1)
 
+	fmt.Println(sm.Get("Go"))
+	fmt.Println(sm.Get("Rust"))
+
 	// coffee.ForEach(sm.Iter(), func(i float64) {
 	// 	fmt.Println(i)
 	// })

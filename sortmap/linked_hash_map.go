@@ -58,7 +58,7 @@ func (hashmap *LinkedHashMap[K, V]) Remove(key K) {
 	}
 }
 
-func (hashmap *LinkedHashMap[K, V]) Get(key K) *V {
+func (hashmap *LinkedHashMap[K, V]) Get(key K) V {
 
 	var (
 		node *Node[K, V]
@@ -66,13 +66,13 @@ func (hashmap *LinkedHashMap[K, V]) Get(key K) *V {
 	)
 
 	if node, ok = hashmap.table[key]; !ok {
-		return nil
+		return node.Value
 	}
 
 	moveNode(hashmap, node)
 	addNodeAtTail(hashmap, node)
 
-	return &node.Value
+	return node.Value
 }
 
 func (hashmap *LinkedHashMap[K, V]) Clear() {
