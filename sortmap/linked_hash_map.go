@@ -1,4 +1,6 @@
-package coffee
+package sortmap
+
+import "github.com/auula/coffee"
 
 type Node[K comparable, V any] struct {
 	Prev, Next *Node[K, V]
@@ -14,7 +16,7 @@ type LinkedHashMap[K comparable, V any] struct {
 	size       int               // current size
 }
 
-func NewLinkedHashMap[K comparable, V any](capacity int) LinkedHashMap[K, V] {
+func New[K comparable, V any](capacity int) LinkedHashMap[K, V] {
 	return LinkedHashMap[K, V]{
 		capacity: capacity,
 		table:    make(map[K]*Node[K, V], capacity),
@@ -50,7 +52,7 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
 func (hashmap *LinkedHashMap[K, V]) Remove(key K) {
 	if node, ok := hashmap.table[key]; ok {
-		moveNode(node)
+		moveNode(hashmap, node)
 		hashmap.size -= 1
 		delete(hashmap.table, key)
 	}
@@ -67,7 +69,7 @@ func (hashmap *LinkedHashMap[K, V]) Get(key K) *V {
 		return nil
 	}
 
-	moveNode(node)
+	moveNode(hashmap, node)
 	addNodeAtTail(hashmap, node)
 
 	return &node.Value
@@ -85,7 +87,17 @@ func (hashmap *LinkedHashMap[K, V]) Size() int {
 }
 
 // 从两个节点中间删除节点
-func moveNode[K comparable, V any](node *Node[K, V]) {
+func moveNode[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node[K, V]) {
+	if node == hashmap.head {
+		node.Next.Prev = nil
+		hashmap.head = node.Next
+		return
+	}
+	if node == hashmap.tail {
+		node.Prev.Next = nil
+		hashmap.tail = node.Prev
+		return
+	}
 	node.Next.Prev = node.Prev
 	node.Prev.Next = node.Next
 }
@@ -97,7 +109,7 @@ func addNodeAtTail[K comparable, V any](hashmap *LinkedHashMap[K, V], node *Node
 	hashmap.tail = node
 }
 
-func (hashmap *LinkedHashMap[K, V]) Iter() Iterator[V] {
+func (hashmap *LinkedHashMap[K, V]) Iter() coffee.Iterator[V] {
 	return hashmap
 }
 
