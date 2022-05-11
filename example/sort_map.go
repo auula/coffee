@@ -14,8 +14,13 @@ func main() {
 	sm.Put("Java", 100)
 	sm.Put("Rust", 80.1)
 
-	fmt.Println(sm.Get("Go"))
-	fmt.Println(sm.Get("Rust"))
+	// 因为返回的是地址，如果没有返回值则为nil
+	fmt.Println(sm.Get("Go101"))
+
+	// 如果有值则返回对应类型的指针
+	k, v := sm.Get("Rust")
+
+	fmt.Printf("\n key:%s \t value:%f \n", *k, *v)
 
 	// coffee.ForEach(sm.Iter(), func(i float64) {
 	// 	fmt.Println(i)
