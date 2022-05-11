@@ -1,18 +1,18 @@
-package bit
+package bitmap
 
-type Map struct {
+type Bits struct {
 	bytes []int16
 	nbits int
 }
 
-func New(nbits int) Map {
-	return Map{
+func New(nbits int) Bits {
+	return Bits{
 		nbits: nbits,
 		bytes: make([]int16, nbits/16+1),
 	}
 }
 
-func (m *Map) Set(index int) {
+func (m *Bits) Set(index int) {
 	if index > m.nbits {
 		return
 	}
@@ -21,7 +21,7 @@ func (m *Map) Set(index int) {
 	m.bytes[byteIndex] |= (1 << bitIndex)
 }
 
-func (m *Map) Peek(index int) bool {
+func (m *Bits) Peek(index int) bool {
 	if index > m.nbits {
 		return false
 	}
