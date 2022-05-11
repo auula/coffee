@@ -16,7 +16,11 @@ func main() {
 
 	lmap.Put("Go", 92.2)
 
-	coffee.ForEach(lmap.Iter(), func(i float64) {
-		fmt.Println(i)
+	// coffee.ForEach(lmap.Iter(), func(i float64) {
+	// 	fmt.Println(i)
+	// })
+
+	lmap.Range(func(node coffee.Node[string, float64]) {
+		fmt.Printf("\n key:%s \t value:%f \n", node.Key, node.Value)
 	})
 }
