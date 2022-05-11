@@ -3,24 +3,22 @@ package main
 import (
 	"fmt"
 
-	"github.com/auula/coffee"
+	"github.com/auula/coffee/sortmap"
 )
 
 func main() {
 
-	var m = coffee.NewLinkedHashMap[string, float64](10)
+	var sm = sortmap.New[string, float64](10)
 
-	m.Put("Go", 91.2)
-	m.Put("Java", 100)
-	m.Put("Rust", 80.1)
+	sm.Put("Go", 91.2)
+	sm.Put("Java", 100)
+	sm.Put("Rust", 80.1)
 
-	m.Put("Go", 92.2)
-
-	// coffee.ForEach(lmap.Iter(), func(i float64) {
+	// coffee.ForEach(sm.Iter(), func(i float64) {
 	// 	fmt.Println(i)
 	// })
 
-	m.Range(func(node coffee.Node[string, float64]) {
+	sm.Range(func(node sortmap.Node[string, float64]) {
 		fmt.Printf("\n key:%s \t value:%f \n", node.Key, node.Value)
 	})
 }
