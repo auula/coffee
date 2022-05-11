@@ -7,18 +7,16 @@ type Node[V any] struct {
 
 // Stored structure
 type LinkedHashMap[K comparable, V any] struct {
-	accessOrder bool           // the iteration ordering method
-	capacity    int            // total capacity
-	head, tail  *Node[V]       // linked list
-	table       map[K]*Node[V] // data storeage
-	size        int            // current size
+	capacity   int            // total capacity
+	head, tail *Node[V]       // linked list
+	table      map[K]*Node[V] // data storeage
+	size       int            // current size
 }
 
-func NewLinkedHashMap[K comparable, V any](capacity int, accessOrder bool) LinkedHashMap[K, V] {
+func NewLinkedHashMap[K comparable, V any](capacity int) LinkedHashMap[K, V] {
 	return LinkedHashMap[K, V]{
-		accessOrder: accessOrder,
-		capacity:    capacity,
-		table:       make(map[K]*Node[V], capacity),
+		capacity: capacity,
+		table:    make(map[K]*Node[V], capacity),
 	}
 }
 
@@ -38,9 +36,6 @@ func (hashmap *LinkedHashMap[K, V]) Put(key K, value V) bool {
 
 	if node, ok := hashmap.table[key]; ok {
 		node.Value = value
-		moveNode(node)
-		node.Next = nil
-		addNodeAtTail(hashmap, node)
 		return true
 	}
 
