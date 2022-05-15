@@ -59,6 +59,10 @@ func (bt *Tree[T]) Search(v T) *Node[T] {
 	return nil
 }
 
+func (bt *Tree[T]) Size() int {
+	return bt.size
+}
+
 func Previous[T coffee.Number](node *Node[T], channel chan *Node[T]) {
 	if node == nil {
 		return
