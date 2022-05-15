@@ -1,4 +1,4 @@
-package tree
+package bst
 
 import "github.com/auula/coffee"
 
@@ -7,12 +7,16 @@ type Node[T coffee.Number] struct {
 	LeftChild, RightChild *Node[T]
 }
 
-type BST[T coffee.Number] struct {
+type Tree[T coffee.Number] struct {
 	Root *Node[T]
 	Size int
 }
 
-func (bt *BST[T]) Insert(v T) {
+func New[T coffee.Number]() *Tree[T] {
+	return new(Tree[T])
+}
+
+func (bt *Tree[T]) Insert(v T) {
 
 	if bt.Root == nil {
 		bt.Root = &Node[T]{Data: v}
@@ -38,7 +42,7 @@ func (bt *BST[T]) Insert(v T) {
 	}
 }
 
-func (bt *BST[T]) Search(v T) *Node[T] {
+func (bt *Tree[T]) Search(v T) *Node[T] {
 	node := bt.Root
 	for node != nil {
 		if v < node.Data {
