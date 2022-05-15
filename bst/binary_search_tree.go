@@ -8,8 +8,8 @@ type Node[T coffee.Number] struct {
 }
 
 type Tree[T coffee.Number] struct {
-	Root *Node[T]
-	Size int
+	root *Node[T]
+	size int
 }
 
 func New[T coffee.Number]() *Tree[T] {
@@ -18,23 +18,26 @@ func New[T coffee.Number]() *Tree[T] {
 
 func (bt *Tree[T]) Insert(v T) {
 
-	if bt.Root == nil {
-		bt.Root = &Node[T]{Data: v}
+	if bt.root == nil {
+		bt.root = &Node[T]{Data: v}
+		bt.size += 1
 		return
 	}
 
-	node := bt.Root
+	node := bt.root
 
 	for node != nil {
 		if v > node.Data {
 			if node.RightChild == nil {
 				node.RightChild = &Node[T]{Data: v}
+				bt.size += 1
 				return
 			}
 			node = node.RightChild
 		} else {
 			if node.LeftChild == nil {
 				node.LeftChild = &Node[T]{Data: v}
+				bt.size += 1
 				return
 			}
 			node = node.LeftChild
@@ -43,7 +46,7 @@ func (bt *Tree[T]) Insert(v T) {
 }
 
 func (bt *Tree[T]) Search(v T) *Node[T] {
-	node := bt.Root
+	node := bt.root
 	for node != nil {
 		if v < node.Data {
 			node = node.LeftChild
