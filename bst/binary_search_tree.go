@@ -9,7 +9,6 @@ type Node[T coffee.Number] struct {
 
 type Tree[T coffee.Number] struct {
 	Root *Node[T]
-	size int
 }
 
 func New[T coffee.Number]() *Tree[T] {
@@ -20,7 +19,6 @@ func (bt *Tree[T]) Insert(v T) {
 
 	if bt.Root == nil {
 		bt.Root = &Node[T]{Data: v}
-		bt.size += 1
 		return
 	}
 
@@ -30,14 +28,12 @@ func (bt *Tree[T]) Insert(v T) {
 		if v > node.Data {
 			if node.RightChild == nil {
 				node.RightChild = &Node[T]{Data: v}
-				bt.size += 1
 				return
 			}
 			node = node.RightChild
 		} else {
 			if node.LeftChild == nil {
 				node.LeftChild = &Node[T]{Data: v}
-				bt.size += 1
 				return
 			}
 			node = node.LeftChild
@@ -93,10 +89,6 @@ func delete[T coffee.Number](node *Node[T], v T) *Node[T] {
 		node.RightChild = delete(node.RightChild, minNode.Data)
 	}
 	return node
-}
-
-func (bt *Tree[T]) Size() int {
-	return bt.size
 }
 
 func Previous[T coffee.Number](node *Node[T], channel chan *Node[T]) {
