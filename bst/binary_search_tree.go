@@ -83,16 +83,15 @@ func delete[T coffee.Number](node *Node[T], v T) *Node[T] {
 		}
 
 		// 不断的在右边找最小节点，然后换上去
-		midNode := node.RightChild
-		for midNode.LeftChild != nil {
-			midNode = node.LeftChild
+		minNode := node.RightChild
+		for minNode.LeftChild != nil {
+			minNode = node.LeftChild
 		}
-		node.Data = midNode.Data
+		node.Data = minNode.Data
 
 		// 换上去直接再把右子节点最小值删除掉
-		node.RightChild = delete(node.RightChild, midNode.Data)
+		node.RightChild = delete(node.RightChild, minNode.Data)
 	}
-
 	return node
 }
 
