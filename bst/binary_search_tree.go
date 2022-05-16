@@ -8,7 +8,7 @@ type Node[T coffee.Number] struct {
 }
 
 type Tree[T coffee.Number] struct {
-	root *Node[T]
+	Root *Node[T]
 	size int
 }
 
@@ -18,13 +18,13 @@ func New[T coffee.Number]() *Tree[T] {
 
 func (bt *Tree[T]) Insert(v T) {
 
-	if bt.root == nil {
-		bt.root = &Node[T]{Data: v}
+	if bt.Root == nil {
+		bt.Root = &Node[T]{Data: v}
 		bt.size += 1
 		return
 	}
 
-	node := bt.root
+	node := bt.Root
 
 	for node != nil {
 		if v > node.Data {
@@ -46,7 +46,7 @@ func (bt *Tree[T]) Insert(v T) {
 }
 
 func (bt *Tree[T]) Search(v T) *Node[T] {
-	node := bt.root
+	node := bt.Root
 	for node != nil {
 		if v < node.Data {
 			node = node.LeftChild
@@ -60,7 +60,7 @@ func (bt *Tree[T]) Search(v T) *Node[T] {
 }
 
 func (bt *Tree[T]) Delete(v T) *Node[T] {
-	return delete(bt.root, v)
+	return delete(bt.Root, v)
 }
 
 func delete[T coffee.Number](node *Node[T], v T) *Node[T] {
@@ -118,7 +118,7 @@ func Intermediate[T coffee.Number](node *Node[T], channel chan *Node[T]) {
 }
 
 func Post[T coffee.Number](node *Node[T], channel chan *Node[T]) {
-	if node != nil {
+	if node == nil {
 		return
 	}
 	Post(node.LeftChild, channel)
