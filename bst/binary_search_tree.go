@@ -59,6 +59,42 @@ func (bt *Tree[T]) Search(v T) *Node[T] {
 	return nil
 }
 
+func (bt *Tree[T]) Delete(v T) *Node[T] {
+	return delete(bt.root, v)
+}
+
+func delete[T coffee.Number](node *Node[T], v T) *Node[T] {
+
+	if node == nil {
+		return nil
+	}
+
+	if v < node.Data {
+		node.LeftChild = delete(node.LeftChild, v)
+	} else if v > node.Data {
+		node.RightChild = delete(node.RightChild, v)
+	} else {
+		// 如果找到了看看有没有左右子节点
+		if node.LeftChild == nil {
+			return node.RightChild
+		}
+		if node.RightChild == nil {
+			return node.LeftChild
+		}
+
+		// 不断的找最小节点
+		midNode := node.LeftChild
+		for midNode.LeftChild != nil {
+			midNode = node.LeftChild
+		}
+		node.Data = midNode.Data
+
+		node.RightChild = delete(node.RightChild, midNode.Data)
+	}
+
+	return node
+}
+
 func (bt *Tree[T]) Size() int {
 	return bt.size
 }
