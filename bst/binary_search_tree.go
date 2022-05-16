@@ -89,6 +89,7 @@ func delete[T coffee.Number](node *Node[T], v T) *Node[T] {
 		}
 		node.Data = midNode.Data
 
+		// 换上去直接再把右子节点最小值删除掉
 		node.RightChild = delete(node.RightChild, midNode.Data)
 	}
 
